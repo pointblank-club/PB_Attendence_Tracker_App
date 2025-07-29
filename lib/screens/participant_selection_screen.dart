@@ -3,6 +3,8 @@ import '../models/participant_model.dart';
 import '../services/mailing_service.dart';
 import '../widgets/participant_search_bar.dart';
 import '../widgets/participant_sort_controls.dart';
+import '../models/filter_model.dart';
+import '../screens/filter_screen.dart';
 
 enum ParticipantSortOption {
   name,
@@ -37,7 +39,6 @@ class _ParticipantSelectionScreenState
     extends State<ParticipantSelectionScreen> {
   final MailingService _mailingService = MailingService();
 
-
   List<ParticipantModel> _originalParticipants = [];
   List<ParticipantModel> _displayParticipants = [];
 
@@ -45,6 +46,8 @@ class _ParticipantSelectionScreenState
   ParticipantSortOption _sortOption = ParticipantSortOption.name;
   bool _isLoading = true;
   bool _selectAll = true;
+
+  FilterModel _activeFilters = FilterModel();
 
   @override
   void initState() {
@@ -58,7 +61,6 @@ class _ParticipantSelectionScreenState
     _searchController.dispose();
     super.dispose();
   }
-
 
   Future<void> _fetchParticipants() async {
     try {
@@ -77,6 +79,26 @@ class _ParticipantSelectionScreenState
 
   void _applyFiltersAndSort() {
     List<ParticipantModel> tempParticipants = List.from(_originalParticipants);
+
+    if (_activeFilters.isFilterActive) {
+      tempParticipants = tempParticipants.where((p) {
+        if (_activeFilters.genders.isNotEmpty &&
+            !_activeFilters.genders.contains(p.gender)) {
+          return false;
+        }
+        if (_activeFilters.affiliationTypes.isNotEmpty &&
+            !_activeFilters.affiliationTypes.contains(p.affiliationType)) {
+          return false;
+        }
+        if (_activeFilters.experienceLevels.isNotEmpty &&
+            !_activeFilters.experienceLevels.contains(p.experienceLevel)) {
+          return false;
+        }
+
+        return true;
+      }).toList();
+    }
+
     final query = _searchController.text.toLowerCase();
 
     if (query.isNotEmpty) {
@@ -85,8 +107,8 @@ class _ParticipantSelectionScreenState
         final emailLower = p.email.toLowerCase();
         final affiliationLower = p.affiliationName?.toLowerCase() ?? '';
         return nameLower.contains(query) ||
-               emailLower.contains(query) ||
-               affiliationLower.contains(query);
+            emailLower.contains(query) ||
+            affiliationLower.contains(query);
       }).toList();
     }
 
@@ -98,16 +120,20 @@ class _ParticipantSelectionScreenState
         tempParticipants.sort((a, b) => a.teamId.compareTo(b.teamId));
         break;
       case ParticipantSortOption.affiliation:
-        tempParticipants.sort((a, b) => (a.affiliationName ?? '').compareTo(b.affiliationName ?? ''));
+        tempParticipants.sort((a, b) =>
+            (a.affiliationName ?? '').compareTo(b.affiliationName ?? ''));
         break;
       case ParticipantSortOption.affiliationType:
-        tempParticipants.sort((a, b) => (a.affiliationType ?? '').compareTo(b.affiliationType ?? ''));
+        tempParticipants.sort((a, b) =>
+            (a.affiliationType ?? '').compareTo(b.affiliationType ?? ''));
         break;
       case ParticipantSortOption.experienceLevel:
-        tempParticipants.sort((a, b) => (a.experienceLevel ?? '').compareTo(b.experienceLevel ?? ''));
+        tempParticipants.sort((a, b) =>
+            (a.experienceLevel ?? '').compareTo(b.experienceLevel ?? ''));
         break;
       case ParticipantSortOption.previousParticipation:
-        tempParticipants.sort((a, b) => (b.previousParticipation ?? false) ? 1 : -1);
+        tempParticipants
+            .sort((a, b) => (b.previousParticipation ?? false) ? 1 : -1);
         break;
       case ParticipantSortOption.age:
         tempParticipants.sort((a, b) => (a.age ?? 999).compareTo(b.age ?? 999));
@@ -142,12 +168,12 @@ class _ParticipantSelectionScreenState
         participants: selectedParticipants,
       );
       if (!mounted) return;
-      Navigator.of(context).pop(); // Close the sending dialog
+      Navigator.of(context).pop(); 
       _showResultDialog(responseData['success'] ?? false,
           responseData['message'] ?? 'An unknown error occurred.');
     } catch (e) {
       if (!mounted) return;
-      Navigator.of(context).pop(); // Close the sending dialog
+      Navigator.of(context).pop(); 
       _showResultDialog(false, e.toString());
     }
   }
@@ -180,7 +206,8 @@ class _ParticipantSelectionScreenState
         contextText = 'Experience: ${participant.experienceLevel ?? 'N/A'}';
         break;
       case ParticipantSortOption.previousParticipation:
-        contextText = 'Participated Before: ${participant.previousParticipation == true ? "Yes" : "No"}';
+        contextText =
+            'Participated Before: ${participant.previousParticipation == true ? "Yes" : "No"}';
         break;
       case ParticipantSortOption.age:
         contextText = 'Age: ${participant.age?.toString() ?? 'N/A'}';
@@ -191,11 +218,10 @@ class _ParticipantSelectionScreenState
 
     return Text(
       contextText,
-      style: const TextStyle(fontSize: 12, color: Colors.deepPurple, fontStyle: FontStyle.italic),
+      style: const TextStyle(
+          fontSize: 12, color: Colors.deepPurple, fontStyle: FontStyle.italic),
     );
   }
-
-
 
   void _showSendingDialog() {
     showDialog(
@@ -218,9 +244,9 @@ class _ParticipantSelectionScreenState
                 actions: [
                   TextButton(
                       onPressed: () {
-                        Navigator.of(c).pop(); // Close result dialog
+                        Navigator.of(c).pop(); 
                         if (success)
-                          Navigator.of(context).pop(); // Go back if successful
+                          Navigator.of(context).pop(); 
                       },
                       child: const Text("OK"))
                 ]));
@@ -229,7 +255,33 @@ class _ParticipantSelectionScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Recipients for ${widget.eventName}')),
+      appBar: AppBar(
+        title: Text('Recipients for ${widget.eventName}'),
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.filter_list,
+              color: _activeFilters.isFilterActive ? Colors.blue : null,
+            ),
+            onPressed: () async {
+              final newFilters = await Navigator.push<FilterModel>(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      FilterScreen(initialFilters: _activeFilters),
+                ),
+              );
+
+              if (newFilters != null) {
+                setState(() {
+                  _activeFilters = newFilters;
+                });
+                _applyFiltersAndSort();
+              }
+            },
+          ),
+        ],
+      ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : Column(
@@ -265,12 +317,13 @@ class _ParticipantSelectionScreenState
                         isThreeLine: true,
                         title: Text(participant.name),
                         subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start, 
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(participant.email),
                             Text(
                               'Team: ${participant.teamId}',
-                              style: const TextStyle(fontSize: 12, color: Colors.blueGrey),
+                              style: const TextStyle(
+                                  fontSize: 12, color: Colors.blueGrey),
                             ),
                             _buildSortContextRow(participant),
                           ],

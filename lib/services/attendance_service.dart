@@ -1,13 +1,14 @@
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+// import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import 'package:qrscanner/utils/config_manager.dart';
 
 class AttendanceService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   
  
-  final String baseUrl = dotenv.env['BASE_URL'] ?? 'http://error.url.not.set';
+  final String baseUrl = ConfigManager.baseUrl;
 
  
   Future<bool> isParticipantCheckedIn(String eventName, String participantId) async {

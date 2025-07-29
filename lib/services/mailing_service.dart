@@ -1,11 +1,11 @@
 import 'dart:convert';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+// import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import '../models/participant_model.dart';
+import 'package:qrscanner/utils/config_manager.dart';
 
 class MailingService {
-  // Get the baseUrl from your .env file
-  final String baseUrl = dotenv.env['BASE_URL'] ?? 'http://error.url.not.set';
+  final String baseUrl = ConfigManager.baseUrl;
 
   Future<List<ParticipantModel>> fetchParticipants(String eventName) async {
     try {

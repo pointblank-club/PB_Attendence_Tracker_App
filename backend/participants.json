@@ -4,10 +4,10 @@
       "$oid": "6a4b1c2d3e4f5a6b7c8d9e0f"
     },
     "participant1": {
-      "name": "Priya Sharma",
-      "email": "aaganail@outlook.com",
+      "name": "Chetan R",
+      "email": "chetan250204@gmail.com",
       "age": 21,
-      "gender": "Female",
+      "gender": "Male",
       "background": {
         "experienceLevel": "Intermediate",
         "previousParticipation": true,

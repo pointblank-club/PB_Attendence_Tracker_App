@@ -39,7 +39,6 @@ class _EventsScreenState extends State<EventsScreen> {
             itemCount: eventDocs.length,
             itemBuilder: (context, index) {
               final event = eventDocs[index];
-              // Assuming event documents have a 'event_name' field
               final eventName = (event.data() as Map<String, dynamic>)['event_name'] ?? event.id;
 
               return Card(

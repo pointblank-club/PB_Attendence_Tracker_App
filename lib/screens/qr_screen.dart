@@ -43,12 +43,12 @@ class _ScannerScreenState extends State<ScannerScreen> {
       final String participantId = decodedData['participant_id'];
       final String participantName = decodedData['participant_name'];
 
-      // Call the service to check for duplicates
+      // check for duplicates
       final bool alreadyCheckedIn = await _attendanceService
           .isParticipantCheckedIn(eventName, participantId);
 
       if (alreadyCheckedIn) {
-        // Show "Already Marked" dialog
+        // show already marked dialog
         if (!mounted) return;
         await showDialog(
             context: context,
@@ -63,7 +63,7 @@ class _ScannerScreenState extends State<ScannerScreen> {
                   ],
                 ));
       } else {
-        // Show "Confirm Attendance" dialog
+        // show confirmation dialog
         if (!mounted) return;
         final bool? confirmed = await showDialog<bool>(
           context: context,
@@ -132,7 +132,6 @@ class _ScannerScreenState extends State<ScannerScreen> {
         );
 
         if (confirmed == true) {
-          // If confirmed, call the service to update attendance
           final String successMessage =
               await _attendanceService.updateAttendance(decodedData);
           if (!mounted) return;
@@ -140,11 +139,9 @@ class _ScannerScreenState extends State<ScannerScreen> {
         }
       }
     } catch (e) {
-      // Catch any errors from validation or the service
       if (!mounted) return;
       _showResultDialog(false, e.toString());
     } finally {
-      // Ensure processing is always set to false
       if (mounted) {
         setState(() {
           _isProcessing = false;
