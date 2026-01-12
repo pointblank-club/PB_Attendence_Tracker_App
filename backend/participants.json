@@ -1,0 +1,114 @@
+[
+  {
+    "_id": {
+      "$oid": "6a4b1c2d3e4f5a6b7c8d9e0f"
+    },
+    "participant1": {
+      "name": "Chetan R",
+      "email": "chetan250204@gmail.com",
+      "age": 21,
+      "gender": "Male",
+      "background": {
+        "experienceLevel": "Intermediate",
+        "previousParticipation": true,
+        "participationDetails": "Hackathon 2024",
+        "affiliationType": "Student",
+        "affiliationName": "Global Institute of Technology"
+      },
+      "phone": "9876543210"
+    },
+    "participant2": {
+      "name": "Rohan Verma",
+      "email": "mysticalail.com",
+      "age": 22,
+      "gender": "Male",
+      "background": {
+        "experienceLevel": "Intermediate",
+        "previousParticipation": false,
+        "participationDetails": null,
+        "affiliationType": "Student",
+        "affiliationName": "Global Institute of Technology"
+      },
+      "phone": "8765432109"
+    },
+    "participationType": "duo",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "7b5c2d3e4f5a6b7c8d9e0f1a"
+    },
+    "participant1": {
+      "name": "Anjali Mehta",
+      "email": "lavenmail.com",
+      "age": 28,
+      "gender": "Female",
+      "background": {
+        "experienceLevel": "Advanced",
+        "previousParticipation": true,
+        "participationDetails": "Cyber Security Conclave",
+        "affiliationType": "Professional",
+        "affiliationName": "SecureNet Solutions"
+      },
+      "phone": "7654321098"
+    },
+    "participationType": "solo",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "8c6d3e4f5a6b7c8d9e0f1b2b"
+    },
+    "participant1": {
+      "name": "Vikram Singh",
+      "email": "vikram.singh@example.dev",
+      "age": 35,
+      "gender": "Male",
+      "background": {
+        "experienceLevel": "Advanced",
+        "previousParticipation": true,
+        "participationDetails": "DevOps Conf 2023",
+        "affiliationType": "Professional",
+        "affiliationName": "CloudNine Infra"
+      },
+      "phone": "6543210987"
+    },
+    "participant2": {
+      "name": "Nisha Patel",
+      "email": "nisha.patel@work.co",
+      "age": 32,
+      "gender": "Female",
+      "background": {
+        "experienceLevel": "Intermediate",
+        "previousParticipation": true,
+        "participationDetails": "AI Summit",
+        "affiliationType": "Professional",
+        "affiliationName": "DataWeave Analytics"
+      },
+      "phone": "5432109876"
+    },
+    "participationType": "duo",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "9d7e4f5a6b7c8d9e0f1c3c4d"
+    },
+    "participant1": {
+      "name": "Kousth",
+      "email": "kusthubh5gmail.com",
+      "age": 20,
+      "gender": "Other",
+      "background": {
+        "experienceLevel": "Beginner",
+        "previousParticipation": false,
+        "participationDetails": null,
+        "affiliationType": "Student",
+        "affiliationName": "MSCE"
+      },
+      "phone": "4321098765"
+    },
+    "participationType": "solo",
+    "__v": 0
+  }
+]

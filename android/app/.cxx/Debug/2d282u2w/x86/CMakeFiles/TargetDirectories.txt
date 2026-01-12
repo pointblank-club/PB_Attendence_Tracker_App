@@ -1,0 +1,2 @@
+C:/Users/gagan/OneDrive/Desktop/fltr/qrscanner/android/app/.cxx/Debug/2d282u2w/x86/CMakeFiles/edit_cache.dir
+C:/Users/gagan/OneDrive/Desktop/fltr/qrscanner/android/app/.cxx/Debug/2d282u2w/x86/CMakeFiles/rebuild_cache.dir

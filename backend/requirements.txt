@@ -1,0 +1,7 @@
+flask==2.3.3
+flask-cors==4.0.0
+qrcode==7.4.2
+pillow==10.0.1
+firebase-admin==6.5.0
+python-dotenv
+pymongo
